@@ -1,6 +1,8 @@
 # Excluded folders
 /.vs/
 /Temp
+.vscode/
+
 
 AssetBundles/
 [Bb]in/
