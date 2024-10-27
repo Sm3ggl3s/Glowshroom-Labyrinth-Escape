@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 1694397713}
   - component: {fileID: 1694397712}
   m_Layer: 0
-  m_Name: WaveFunctionCollapse
+  m_Name: WFCGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -515,19 +515,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dimensions: 20
   tileObjects:
-  - {fileID: 1230050691038320604, guid: 87b89ada928f3438db7d6021bc458989, type: 3}
-  - {fileID: 6701893192796163748, guid: cc95ae31b22a948408c94a04ef45633b, type: 3}
-  - {fileID: 6701893192796163748, guid: ccfe94c014d674ff5b4de90ab1600025, type: 3}
-  - {fileID: 107409368584851643, guid: e75b4b026eb214afd8f014b9539c96ea, type: 3}
-  - {fileID: -3241605246618489973, guid: c01f82220b4aa4b91ad0f85b75541016, type: 3}
-  - {fileID: -2529828756596199090, guid: e146dd9611f914c80aa292059e0c1f52, type: 3}
-  - {fileID: 8496660381184233228, guid: dd08f1cc062dc4f84930b5bafc66fce4, type: 3}
-  - {fileID: 5625782094014180094, guid: 2123a30c4cfc2403abf0f1c257385423, type: 3}
-  - {fileID: -1509303872876268396, guid: f2a9890d4dd6a43248b5302534a24163, type: 3}
-  - {fileID: -3241605246618489973, guid: 8ff52cde9a0054c35b38e50a3c7e5317, type: 3}
+  - {fileID: 9049467756677362512, guid: be37d301e3bb14986bd8f8ac230ca680, type: 3}
+  - {fileID: 9049467756677362512, guid: 079b07a623270467581a6623f6f58664, type: 3}
+  - {fileID: 9049467756677362512, guid: 310b211008d7c45d3a4b361c2d95cffb, type: 3}
+  - {fileID: 9049467756677362512, guid: 8a441e7ec66114fc5afd4ffa63c0c42a, type: 3}
+  - {fileID: 198679809206369451, guid: d82372511a860460d901f544abcd4a83, type: 3}
+  - {fileID: 9107656717035106345, guid: 88348d9f07fe944c0a4ec89152c494df, type: 3}
+  - {fileID: 9107656717035106345, guid: c67adf409a9004564bb9fb2313d474e0, type: 3}
+  - {fileID: 9107656717035106345, guid: 7c59274b012b34a639de9c5bab6b7c0a, type: 3}
+  - {fileID: 9107656717035106345, guid: 2955181a0395248b48ac6038f82a2589, type: 3}
+  - {fileID: 198679809206369451, guid: c307de34f87614d36abd921aefd9f9dd, type: 3}
   gridComponents: []
   cellObj: {fileID: 7942102579499848955, guid: 9dd97a389d9eb4788a0ba07e6be745c4, type: 3}
-  backupTile: {fileID: 9209203226843272907, guid: 6b8d950832e814124a1823aea98ee7be, type: 3}
+  backupTile: {fileID: -2651305083729002377, guid: 03a4f62be948a459abb1f1af55708da5, type: 3}
 --- !u!4 &1694397713
 Transform:
   m_ObjectHideFlags: 0
