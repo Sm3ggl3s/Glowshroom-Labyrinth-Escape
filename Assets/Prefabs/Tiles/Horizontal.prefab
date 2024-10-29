@@ -182,6 +182,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upNeighbors:
   - {fileID: 9049467756677362512, guid: be37d301e3bb14986bd8f8ac230ca680, type: 3}
-  rightNeighbors: []
-  downNeighbors: []
-  leftNeighbors: []
+  - {fileID: 9049467756677362512, guid: 8a441e7ec66114fc5afd4ffa63c0c42a, type: 3}
+  - {fileID: 9107656717035106345, guid: 88348d9f07fe944c0a4ec89152c494df, type: 3}
+  - {fileID: 198679809206369451}
+  rightNeighbors:
+  - {fileID: 9049467756677362512, guid: 310b211008d7c45d3a4b361c2d95cffb, type: 3}
+  - {fileID: 9049467756677362512, guid: 8a441e7ec66114fc5afd4ffa63c0c42a, type: 3}
+  - {fileID: 198679809206369451}
+  - {fileID: 9107656717035106345, guid: 88348d9f07fe944c0a4ec89152c494df, type: 3}
+  - {fileID: 9107656717035106345, guid: 7c59274b012b34a639de9c5bab6b7c0a, type: 3}
+  - {fileID: 9107656717035106345, guid: 2955181a0395248b48ac6038f82a2589, type: 3}
+  downNeighbors:
+  - {fileID: 9049467756677362512, guid: 079b07a623270467581a6623f6f58664, type: 3}
+  - {fileID: 9049467756677362512, guid: 310b211008d7c45d3a4b361c2d95cffb, type: 3}
+  - {fileID: 198679809206369451}
+  - {fileID: 9107656717035106345, guid: 7c59274b012b34a639de9c5bab6b7c0a, type: 3}
+  leftNeighbors:
+  - {fileID: 9049467756677362512, guid: be37d301e3bb14986bd8f8ac230ca680, type: 3}
+  - {fileID: 9049467756677362512, guid: 079b07a623270467581a6623f6f58664, type: 3}
+  - {fileID: 198679809206369451}
+  - {fileID: 9107656717035106345, guid: 88348d9f07fe944c0a4ec89152c494df, type: 3}
+  - {fileID: 9107656717035106345, guid: c67adf409a9004564bb9fb2313d474e0, type: 3}
+  - {fileID: 9107656717035106345, guid: 7c59274b012b34a639de9c5bab6b7c0a, type: 3}

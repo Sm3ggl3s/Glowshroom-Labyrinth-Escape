@@ -16,6 +16,12 @@ public class WaveFunctionCollapse : MonoBehaviour {
 
     [SerializeField] private Tile backupTile;
 
+    [Header("Border Cell Settings")]
+    [SerializeField] private Tile[] topTiles;
+    [SerializeField] private Tile[] bottomTiles;
+    [SerializeField] private Tile[] leftTiles;
+    [SerializeField] private Tile[] rightTiles;
+
     private int iteration;
 
     private void Awake() {
@@ -29,7 +35,24 @@ public class WaveFunctionCollapse : MonoBehaviour {
             for(int x = 0; x < dimensions; x++) {
                 // Create a new cell at the specified position (x, y)
                 Cell newCell = Instantiate(cellObj, new Vector3(x, 0, y), Quaternion.identity);
-                newCell.CreateCell(false, tileObjects);
+
+                // If the cell is on the border, set the tile options to the border tiles
+                if (y == 0) {
+                    // Top row
+                    newCell.CreateCell(false, topTiles);
+                } else if (y == dimensions - 1) {
+                    // Bottom row
+                    newCell.CreateCell(false, bottomTiles);
+                } else if (x == 0) {
+                    // Left column
+                    newCell.CreateCell(false, leftTiles);
+                } else if (x == dimensions - 1) {
+                    // Right column 
+                    newCell.CreateCell(false, rightTiles);
+                } else {
+                    newCell.CreateCell(false, tileObjects);
+                }
+
                 gridComponents.Add(newCell);
             }
         }
