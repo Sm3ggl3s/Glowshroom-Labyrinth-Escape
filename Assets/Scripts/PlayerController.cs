@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float gravityMultiplier = 3.0f;
     private float _velocity;
 
+    [Header("References")]
+    [SerializeField] private Transform cameraTransform; // Reference to the camera transform
+
     private void Awake() {
         _controller = GetComponent<CharacterController>();
     }
@@ -31,33 +34,42 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
-        // Normalize input vector to standardize movement speed
-        _direction.Normalize();
-        _direction *= moveSpeed;
+        // Adjust movement direction to align with camera's forward direction
+        Vector3 forward = cameraTransform.forward;
+        Vector3 right = cameraTransform.right;
+
+        // Ignore vertical component of camera direction
+        forward.y = 0;
+        right.y = 0;
+
+        forward.Normalize();
+        right.Normalize();
+
+        // Calculate movement direction based on input and camera orientation
+        _direction = (forward * _input.y + right * _input.x).normalized * moveSpeed;
+
+        // Apply gravity to the direction
+        _direction.y = _velocity;
 
         // Move the player
         _controller.Move(_direction * Time.deltaTime);
 
-        // Face player along movement vector
-        Quaternion targetRotation = Quaternion.LookRotation(_direction);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        // Face the player in the direction of movement
+        if (_direction.sqrMagnitude > 0.01f) {
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(_direction.x, 0, _direction.z));
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        }
     }
 
     private void PlayerGravity() {
-        if (_controller.isGrounded && _velocity < 0.0f)
-        {
+        if (_controller.isGrounded && _velocity < 0.0f) {
             _velocity = -1.0f;
-        }
-        else
-        {
+        } else {
             _velocity += _gravity * gravityMultiplier * Time.deltaTime;
         }
-        
-        _direction.y = _velocity;
     }
 
     public void Move(InputAction.CallbackContext context) { 
         _input = context.ReadValue<Vector2>();
-        _direction = new Vector3(_input.x, 0, _input.y);
     }
 }
