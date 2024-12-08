@@ -10,6 +10,9 @@ public class WaveFunctionCollapse : MonoBehaviour {
     [Header("Maze Settings")]
     [SerializeField] private int dimensions;
     [SerializeField] private Tile[] tileObjects;
+    private Vector3 endLocation;
+    private float endReachThreshold = 10f; // The distance threshold for the player to reach the end cell
+
 
     [Header("Grid Settings")]
     [SerializeField] private List<Cell> gridComponents;
@@ -30,11 +33,16 @@ public class WaveFunctionCollapse : MonoBehaviour {
     [SerializeField] private CinemachineFreeLook freeLookCamera; // Reference to the FreeLook Camera
     [SerializeField] private string lookAtChildName = "LookAt";
 
+    private GameObject player; // Reference to the instantiated player object
     private int iteration;
 
     private void Awake() {
         gridComponents = new List<Cell>();
         InitializeGrid();
+    }
+
+    private void Update() {
+        CheckIfPlayerReachedEnd();
     }
 
     // Initialize the grid with cells that have the tile options
@@ -202,6 +210,9 @@ public class WaveFunctionCollapse : MonoBehaviour {
         } else {
             // If all cells have been collapsed, spawn the player at a random start cell
             SpawnPlayerAtRandomStartCell();
+
+            // Set a random cell as the end cell
+            SetEndCell();
         }
     }
 
@@ -215,6 +226,24 @@ public class WaveFunctionCollapse : MonoBehaviour {
                 optionList.RemoveAt(x);
             }
         }
+    }
+
+    // Check if the player has reached the end
+    private void CheckIfPlayerReachedEnd() {
+        if (player != null && endLocation != Vector3.zero) {
+            float distance = Vector3.Distance(player.transform.position, endLocation);
+            Debug.Log($"Distance from player to end: {distance} (Threshold: {endReachThreshold})");
+
+            if (distance < endReachThreshold) {
+                OnPlayerReachedEnd();
+            }
+        }
+    }
+
+    // Called when the player reaches the end
+    private void OnPlayerReachedEnd() {
+        Debug.Log("Player has reached the end!");
+        // Handle the end game logic, like transitioning to a new level or showing a message.
     }
 
     // Place the player at a random spawn cell
@@ -236,7 +265,7 @@ public class WaveFunctionCollapse : MonoBehaviour {
         Vector3 spawnLocation = startCell.transform.position + new Vector3(0, 2f, 0);
 
         // Spawn the player prefab at the cell's position
-        GameObject player = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
+        player = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
 
         Debug.Log($"Player spawned at: {spawnLocation}");
 
@@ -254,5 +283,30 @@ public class WaveFunctionCollapse : MonoBehaviour {
         } else {
             Debug.LogError("FreeLookCamera is not assigned in the inspector.");
         }
+    }
+
+    // Set a random cell to be the end cell
+    private void SetEndCell() {
+        List<Cell> validEndCells = gridComponents.Where(cell => cell.collapsed).ToList();
+        if (validEndCells.Count == 0) {
+            Debug.LogError("No valid cells available to set as the end cell.");
+            return;
+        }
+
+        int randomIndex = UnityEngine.Random.Range(0, validEndCells.Count);
+        Cell endCell = validEndCells[randomIndex];
+        endLocation = endCell.transform.position + new Vector3(0, 2f, 0); // Set the end location slightly above the end cell
+
+        // Optionally, place a marker for the end cell
+        GameObject endMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        endMarker.transform.position = endLocation;
+        endMarker.transform.localScale = new Vector3(5, 100, 5);
+
+        Debug.Log($"End cell set at: {endLocation}");
+    }
+
+    // Return the end location for the player to reach
+    public Vector3 GetEndLocation() {
+        return endLocation;
     }
 }
