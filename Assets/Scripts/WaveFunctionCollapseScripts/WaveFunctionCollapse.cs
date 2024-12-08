@@ -4,8 +4,6 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Cinemachine;
-using UnityEngine.InputSystem;
-
 
 public class WaveFunctionCollapse : MonoBehaviour {
 
@@ -255,25 +253,6 @@ public class WaveFunctionCollapse : MonoBehaviour {
             }
         } else {
             Debug.LogError("FreeLookCamera is not assigned in the inspector.");
-        }
-
-        // Get the PlayerInput component from the scene's player input manager (empty GameObject)
-        PlayerInput playerInput = FindObjectOfType<PlayerInput>();
-
-        // Ensure the PlayerInput component is found
-        if (playerInput != null) {
-            // Get the PlayerController from the spawned player prefab
-            PlayerController playerController = player.GetComponent<PlayerController>();
-
-            // Ensure PlayerController is attached to the player prefab
-            if (playerController != null) {
-                // Bind the Move input action to the Move method in PlayerController
-                playerInput.actions["Move"].performed += playerController.Move;
-            } else {
-                Debug.LogError("PlayerController not found on the spawned player prefab.");
-            }
-        } else {
-            Debug.LogError("PlayerInput component missing in the scene.");
         }
     }
 }

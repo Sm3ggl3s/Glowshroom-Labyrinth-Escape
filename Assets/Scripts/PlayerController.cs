@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour {
     [Header("References")]
     [SerializeField] private Transform cameraTransform; // Reference to the camera transform
 
+
+    [Header("Input Action Settings")]
+    [SerializeField] private InputActionReference playerInputAction;
+
     private void Awake() {
         _controller = GetComponent<CharacterController>();
 
@@ -44,13 +48,20 @@ public class PlayerController : MonoBehaviour {
         if (!_controller.isGrounded) {
             _velocity = -2f; // A slight negative velocity to ensure initial descent
         }
+
+        // Bind the Move input action from the PlayerInput component to the Move method
+        if (playerInputAction != null && playerInputAction.action != null) {
+            playerInputAction.action.performed += Move;
+            playerInputAction.action.canceled += Move;
+        }
     }
 
     private void Update() {
-        PlayerGravity();
+        PlayerGravity(); // Gravity is applied here
 
         if (_input.sqrMagnitude == 0) {
-            _controller.Move(Vector3.zero);
+            _direction = Vector3.zero; // Stop horizontal movement completely
+            _controller.Move(Vector3.zero); // Apply no movement when no input
             return;
         }
 
@@ -65,13 +76,13 @@ public class PlayerController : MonoBehaviour {
         forward.Normalize();
         right.Normalize();
 
-        // Calculate movement direction based on input and camera orientation
+        // Calculate horizontal movement direction based on input and camera orientation
         _direction = (forward * _input.y + right * _input.x).normalized * moveSpeed;
 
-        // Apply gravity to the direction
+        // Apply gravity to the vertical direction only
         _direction.y = _velocity;
 
-        // Move the player
+        // Apply movement (only horizontal movement when input is present, and vertical movement due to gravity)
         _controller.Move(_direction * Time.deltaTime);
 
         // Face the player in the direction of movement
@@ -83,16 +94,25 @@ public class PlayerController : MonoBehaviour {
 
     private void PlayerGravity() {
         if (_controller.isGrounded && _velocity < 0.0f) {
-            _velocity = -1.0f;
+            _velocity = -1.0f; // Reset to a small downward force when grounded
         } else {
-            _velocity += _gravity * gravityMultiplier * Time.deltaTime;
+            _velocity += _gravity * gravityMultiplier * Time.deltaTime; // Apply gravity force over time
         }
 
-        // Always apply gravity at the start to ensure the player moves downward
+        // Apply gravity only on the y-axis, affecting vertical velocity
         _controller.Move(new Vector3(0, _velocity, 0) * Time.deltaTime);
     }
 
+
     public void Move(InputAction.CallbackContext context) { 
         _input = context.ReadValue<Vector2>();
+    }
+
+    private void OnDestroy() {
+        // Unsubscribe from the input actions when this object is destroyed
+        if (playerInputAction != null && playerInputAction.action != null) {
+            playerInputAction.action.performed -= Move;
+            playerInputAction.action.canceled -= Move;
+        }
     }
 }
