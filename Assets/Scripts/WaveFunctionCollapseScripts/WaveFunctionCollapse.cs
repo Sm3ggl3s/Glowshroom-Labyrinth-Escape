@@ -34,7 +34,7 @@ public class WaveFunctionCollapse : MonoBehaviour {
         for(int y = 0; y < dimensions; y++) {
             for(int x = 0; x < dimensions; x++) {
                 // Create a new cell at the specified position (x, y)
-                Cell newCell = Instantiate(cellObj, new Vector3(x * 10f, 0, y * 10f), Quaternion.identity);
+                Cell newCell = Instantiate(cellObj, new Vector3(x * 20f, 0, y * 20f), Quaternion.identity);
 
                 // If the cell is on the border, set the tile options to the border tiles
                 if (y == 0) {
