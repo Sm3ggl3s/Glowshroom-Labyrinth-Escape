@@ -29,6 +29,11 @@ public class PlayerController : MonoBehaviour {
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // Ensure the player starts with a slight downward force for dropping
+        if (!_controller.isGrounded) {
+            _velocity = -2f; // A slight negative velocity to ensure initial descent
+        }
     }
 
     private void Update() {
@@ -72,6 +77,9 @@ public class PlayerController : MonoBehaviour {
         } else {
             _velocity += _gravity * gravityMultiplier * Time.deltaTime;
         }
+
+        // Always apply gravity at the start to ensure the player moves downward
+        _controller.Move(new Vector3(0, _velocity, 0) * Time.deltaTime);
     }
 
     public void Move(InputAction.CallbackContext context) { 
