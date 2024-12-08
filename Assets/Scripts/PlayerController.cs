@@ -24,6 +24,16 @@ public class PlayerController : MonoBehaviour {
 
     private void Awake() {
         _controller = GetComponent<CharacterController>();
+
+        // Automatically assign the main camera if not already set
+        if (cameraTransform == null) {
+            Camera mainCamera = Camera.main;
+            if (mainCamera != null) {
+                cameraTransform = mainCamera.transform;
+            } else {
+                Debug.LogWarning("No camera tagged as MainCamera found in the scene.");
+            }
+        }
     }
 
     private void Start() {

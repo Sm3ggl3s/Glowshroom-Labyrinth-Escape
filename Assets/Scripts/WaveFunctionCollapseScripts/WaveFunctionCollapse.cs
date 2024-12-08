@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Cinemachine;
+using UnityEngine.InputSystem;
+
 
 public class WaveFunctionCollapse : MonoBehaviour {
 
@@ -21,6 +24,13 @@ public class WaveFunctionCollapse : MonoBehaviour {
     [SerializeField] private Tile[] bottomTiles;
     [SerializeField] private Tile[] leftTiles;
     [SerializeField] private Tile[] rightTiles;
+
+    [Header("Player Settings")]
+    [SerializeField] private GameObject playerPrefab;
+
+    [Header("Cinemachine Settings")]
+    [SerializeField] private CinemachineFreeLook freeLookCamera; // Reference to the FreeLook Camera
+    [SerializeField] private string lookAtChildName = "LookAt";
 
     private int iteration;
 
@@ -191,6 +201,9 @@ public class WaveFunctionCollapse : MonoBehaviour {
         // If the iteration is less than the total number of cells, continue collapsing cells
         if (iteration < dimensions * dimensions) {
             StartCoroutine(CheckEntropy());
+        } else {
+            // If all cells have been collapsed, spawn the player at a random start cell
+            SpawnPlayerAtRandomStartCell();
         }
     }
 
@@ -203,6 +216,64 @@ public class WaveFunctionCollapse : MonoBehaviour {
             if (!validOption.Contains(element)) {
                 optionList.RemoveAt(x);
             }
+        }
+    }
+
+    // Place the player at a random spawn cell
+    private void SpawnPlayerAtRandomStartCell() {
+        // Get all valid spawn cells
+        List<Cell> validStartCells = gridComponents.Where(cell => cell.collapsed).ToList();
+
+        // Debug error if no valid cells are available
+        if (validStartCells.Count == 0) {
+            Debug.LogError("No valid cells available to spawn the player.");
+            return;
+        }
+
+        // Choose a random cell
+        int randomIndex = UnityEngine.Random.Range(0, validStartCells.Count);
+        Cell startCell = validStartCells[randomIndex];
+
+        // Calculate the spawn position slightly above the cell
+        Vector3 spawnLocation = startCell.transform.position + new Vector3(0, 2f, 0);
+
+        // Spawn the player prefab at the cell's position
+        GameObject player = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
+
+        Debug.Log($"Player spawned at: {spawnLocation}");
+
+        // Set the Cinemachine FreeLook camera's LookAt target to the player's transform
+        if (freeLookCamera != null) {
+            freeLookCamera.Follow = player.transform;
+
+            // Find the LookAt child object in the player prefab
+            Transform lookAtTarget = player.transform.Find(lookAtChildName);
+            if (lookAtTarget != null) {
+                freeLookCamera.LookAt = lookAtTarget;
+            } else {
+                Debug.LogError($"LookAt target '{lookAtChildName}' not found as a child of the player prefab.");
+            }
+        } else {
+            Debug.LogError("FreeLookCamera is not assigned in the inspector.");
+        }
+
+        // Get the PlayerInput component from the scene's player input manager (empty GameObject)
+        PlayerInput playerInput = FindObjectOfType<PlayerInput>();
+
+        // Ensure the PlayerInput component is found
+        if (playerInput != null) {
+            // Get the PlayerController from the spawned player prefab
+            PlayerController playerController = player.GetComponent<PlayerController>();
+
+            // Ensure PlayerController is attached to the player prefab
+            if (playerController != null) {
+                // Bind the Move input action to the Move method in PlayerController
+                playerInput.actions["Move"].performed += playerController.Move;
+            } else {
+                Debug.LogError("PlayerController not found on the spawned player prefab.");
+            }
+        } else {
+            Debug.LogError("PlayerInput component missing in the scene.");
         }
     }
 }
