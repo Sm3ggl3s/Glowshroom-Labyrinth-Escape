@@ -14,11 +14,6 @@ public class PlayerController : MonoBehaviour {
     [Header("Rotation Settings")]
     [SerializeField] private float turnSpeed = 10f;
 
-    [Header("Gravity Settings")]
-    private float _gravity = -9.81f;
-    [SerializeField] private float gravityMultiplier = 3.0f;
-    private float _velocity;
-
     [Header("References")]
     [SerializeField] private Transform cameraTransform; // Reference to the camera transform
 
@@ -26,48 +21,43 @@ public class PlayerController : MonoBehaviour {
         _controller = GetComponent<CharacterController>();
     }
 
+    private void Start() {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private Vector3 _currentPosition;
+
     private void Update() {
-        PlayerGravity();
+        if (_input.sqrMagnitude > 0.01f) {
+            Vector3 forward = cameraTransform.forward;
+            Vector3 right = cameraTransform.right;
 
-        if (_input.sqrMagnitude == 0) {
-            _controller.Move(Vector3.zero);
-            return;
-        }
+            forward.y = 0;
+            right.y = 0;
 
-        // Adjust movement direction to align with camera's forward direction
-        Vector3 forward = cameraTransform.forward;
-        Vector3 right = cameraTransform.right;
+            forward.Normalize();
+            right.Normalize();
 
-        // Ignore vertical component of camera direction
-        forward.y = 0;
-        right.y = 0;
+            // Calculate desired position
+            Vector3 targetDirection = (forward * _input.y + right * _input.x).normalized * moveSpeed;
 
-        forward.Normalize();
-        right.Normalize();
+            // Smooth the movement direction
+            _direction = Vector3.SmoothDamp(_direction, targetDirection, ref _currentPosition, 0.1f);
 
-        // Calculate movement direction based on input and camera orientation
-        _direction = (forward * _input.y + right * _input.x).normalized * moveSpeed;
+            // Move the player
+            _controller.Move(_direction * Time.deltaTime);
 
-        // Apply gravity to the direction
-        _direction.y = _velocity;
-
-        // Move the player
-        _controller.Move(_direction * Time.deltaTime);
-
-        // Face the player in the direction of movement
-        if (_direction.sqrMagnitude > 0.01f) {
-            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(_direction.x, 0, _direction.z));
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            // Rotate the player
+            Vector3 lookDirection = new Vector3(_direction.x, 0, _direction.z);
+            if (lookDirection.sqrMagnitude > 0.01f) {
+                Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            }
         }
     }
 
-    private void PlayerGravity() {
-        if (_controller.isGrounded && _velocity < 0.0f) {
-            _velocity = -1.0f;
-        } else {
-            _velocity += _gravity * gravityMultiplier * Time.deltaTime;
-        }
-    }
+
 
     public void Move(InputAction.CallbackContext context) { 
         _input = context.ReadValue<Vector2>();
