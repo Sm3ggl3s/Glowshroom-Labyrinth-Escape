@@ -40,6 +40,7 @@ public class WaveFunctionCollapse : MonoBehaviour {
 
     private void Awake() {
         gridComponents = new List<Cell>();
+        GUIManager.Instance.ShowLoadingScreen(); // Show the loading screen
         InitializeGrid();
     }
 
@@ -88,6 +89,10 @@ public class WaveFunctionCollapse : MonoBehaviour {
         yield return new WaitForSeconds(0.025f); // Wait for a short amount of time before collapsing the cell
 
         CollapseCell(tempGrid);
+
+        // Update progress bar based on the iteration and total number of cells
+        float progress = (float)iteration / (dimensions * dimensions);
+        GUIManager.Instance.UpdateLoadingProgress(progress);
     }
 
     // Collapse a random cell from the list of cells with the least amount of options
@@ -215,6 +220,9 @@ public class WaveFunctionCollapse : MonoBehaviour {
 
             // Set a random cell as the end cell
             SetEndCell();
+
+            // Hide the loading screen after a short delay
+            StartCoroutine(WaitAndHideLoadingScreen());
         }
     }
 
@@ -308,5 +316,11 @@ public class WaveFunctionCollapse : MonoBehaviour {
     // Return the end location for the player to reach
     public Vector3 GetEndLocation() {
         return endLocation;
+    }
+
+    // Coroutine to wait for a short amount of time before hiding the loading screen
+    private IEnumerator WaitAndHideLoadingScreen() {
+        yield return new WaitForSeconds(2f);
+        GUIManager.Instance.HideLoadingScreen(); // Hide the loading screen
     }
 }
