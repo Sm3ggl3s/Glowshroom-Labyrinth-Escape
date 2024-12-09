@@ -13,6 +13,8 @@ public class WaveFunctionCollapse : MonoBehaviour {
     private Vector3 endLocation;
     private float endReachThreshold = 10f; // The distance threshold for the player to reach the end cell
 
+    [SerializeField] private GameObject exitPrefab;
+
 
     [Header("Grid Settings")]
     [SerializeField] private List<Cell> gridComponents;
@@ -295,12 +297,10 @@ public class WaveFunctionCollapse : MonoBehaviour {
 
         int randomIndex = UnityEngine.Random.Range(0, validEndCells.Count);
         Cell endCell = validEndCells[randomIndex];
-        endLocation = endCell.transform.position + new Vector3(0, 2f, 0); // Set the end location slightly above the end cell
+        endLocation = endCell.transform.position + new Vector3(0, 4f, 0); // Set the end location slightly above the end cell
 
-        // Optionally, place a marker for the end cell
-        GameObject endMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        endMarker.transform.position = endLocation;
-        endMarker.transform.localScale = new Vector3(5, 100, 5);
+        // Instantiate the exit prefab at the end cell's position
+        Instantiate(exitPrefab, endLocation, Quaternion.identity);
 
         Debug.Log($"End cell set at: {endLocation}");
     }
