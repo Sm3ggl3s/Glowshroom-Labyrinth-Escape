@@ -178,6 +178,7 @@ public class GUIManager : MonoBehaviour {
         yield return new WaitForSecondsRealtime(5f); // Wait for 5 seconds
         SceneManager.LoadScene("Main Menu");
         screen.SetActive(false);
+        ShowCursor();
     }
 
 

@@ -469,6 +469,8 @@ MonoBehaviour:
   loadingScreen: {fileID: 1018913406}
   progressSlider: {fileID: 661772873}
   pauseMenu: {fileID: 1213264563}
+  winScreen: {fileID: 1642344887}
+  deathScreen: {fileID: 858101388}
   healthBarUI: {fileID: 918549674}
   healthBarSlider: {fileID: 990418480}
   healthBarText: {fileID: 1322019063}
@@ -480,13 +482,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361345757}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1117.304, y: -498.4603, z: 3.2883177}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1298837575}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1817178766}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &365104954
 GameObject:
@@ -2042,9 +2044,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: QuitGame
+      - m_Target: {fileID: 361345758}
+        m_TargetAssemblyTypeName: GUIManager, Assembly-CSharp
+        m_MethodName: QuitToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4041,6 +4043,38 @@ Transform:
   - {fileID: 2056834602}
   m_Father: {fileID: 1709832036}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1817178765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1817178766}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1817178766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817178765}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1117.304, y: 498.4603, z: -3.2883177}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 361345759}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1840829515
 GameObject:
   m_ObjectHideFlags: 3
@@ -4619,5 +4653,5 @@ SceneRoots:
   - {fileID: 838333883}
   - {fileID: 657560645}
   - {fileID: 2147468565}
-  - {fileID: 361345759}
   - {fileID: 540277712}
+  - {fileID: 1817178766}
