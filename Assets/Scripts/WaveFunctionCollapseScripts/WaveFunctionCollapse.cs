@@ -256,7 +256,8 @@ public class WaveFunctionCollapse : MonoBehaviour {
     // Called when the player reaches the end
     private void OnPlayerReachedEnd() {
         Debug.Log("Player has reached the end!");
-        // Handle the end game logic, like transitioning to a new level or showing a message.
+        GUIManager.Instance.ShowWinScreen();
+
     }
 
     // Place the player at a random spawn cell

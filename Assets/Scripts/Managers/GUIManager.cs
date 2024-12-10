@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GUIManager : MonoBehaviour {
 
@@ -12,6 +13,8 @@ public class GUIManager : MonoBehaviour {
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private Slider progressSlider;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject winScreen;
+    [SerializeField] private GameObject deathScreen;
 
     [Header("UI Elements")]
     [SerializeField] private GameObject healthBarUI;
@@ -69,6 +72,13 @@ public class GUIManager : MonoBehaviour {
         Time.timeScale = 1;
         if (pauseMenu != null) pauseMenu.SetActive(false);
         HideCursor();
+    }
+    // Called by the Quit button in the pause menu
+    public void QuitToMainMenu() {
+        ShowCursor();
+        Time.timeScale = 1;
+        isGamePaused = false;
+        SceneManager.LoadScene("Main Menu");
     }
 
     // Show and unlock the cursor when paused
@@ -142,6 +152,32 @@ public class GUIManager : MonoBehaviour {
         if (healthBarText != null){
             healthBarText.text = $"{Mathf.Ceil(currentHealth)}";
         }
+    }
+
+    // Show the win screen and transition back to Main Menu
+    public void ShowWinScreen() {
+        if (winScreen != null) {
+            winScreen.SetActive(true);
+            StartCoroutine(ShowScreenAndReturnToMenu(winScreen));
+        } else {
+            Debug.LogError("Win screen reference is missing in GUIManager.");
+        }
+    }
+
+    // Show the death screen and transition back to Main Menu
+    public void ShowDeathScreen() {
+        if (deathScreen != null) {
+            deathScreen.SetActive(true);
+            StartCoroutine(ShowScreenAndReturnToMenu(deathScreen));
+        } else {
+            Debug.LogError("Death screen reference is missing in GUIManager.");
+        }
+    }
+
+    private IEnumerator ShowScreenAndReturnToMenu(GameObject screen) {
+        yield return new WaitForSecondsRealtime(5f); // Wait for 5 seconds
+        SceneManager.LoadScene("Main Menu");
+        screen.SetActive(false);
     }
 
 

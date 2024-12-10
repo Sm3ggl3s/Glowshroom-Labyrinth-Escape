@@ -54,7 +54,8 @@ public class HealthSystem : MonoBehaviour {
     }
 
     private void HandlePlayerDeath() {
-        // Handle player death here
+        Debug.Log("Player has died.");
+        GUIManager.Instance.ShowDeathScreen();
     }
 
     public void RestoreHealth(float amount) {
