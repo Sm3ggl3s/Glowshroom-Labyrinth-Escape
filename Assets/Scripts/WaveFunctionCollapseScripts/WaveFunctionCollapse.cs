@@ -280,9 +280,10 @@ public class WaveFunctionCollapse : MonoBehaviour {
         // Spawn the player prefab at the cell's position
         player = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
 
-        Vector3 entranceSpawnLocation = spawnLocation + new Vector3(0, 3f, 0);
-        // Instantiate the exit prefab at the end cell's position
-        Instantiate(startPrefab, spawnLocation, Quaternion.identity);
+        Vector3 entranceSpawnLocation = startCell.transform.position + new Vector3(0, 7f, 0);
+
+        // Instantiate the start prefab at the player's position
+        Instantiate(startPrefab, entranceSpawnLocation, Quaternion.identity);
 
         Debug.Log($"Player spawned at: {spawnLocation}");
 

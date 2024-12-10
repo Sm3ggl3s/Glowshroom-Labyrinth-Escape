@@ -87,7 +87,7 @@ public class GUIManager : MonoBehaviour {
         }
 
         if (healthBarText != null){
-            healthBarText.text = $"{currentHealth}";
+            healthBarText.text = $"{Mathf.Ceil(currentHealth)}";
         }
     }
 
