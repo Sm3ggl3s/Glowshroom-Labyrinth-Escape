@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3350439697850970082}
   - component: {fileID: 2520417569982166967}
   - component: {fileID: 5720114140609405616}
+  - component: {fileID: -8860220744121664901}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -103,6 +104,22 @@ MonoBehaviour:
   gravityMultiplier: 3
   cameraTransform: {fileID: 0}
   playerInputAction: {fileID: 271983830393874426, guid: 93e542fda5e8549b7b8545bda0b83390, type: 3}
+  maxHealth: 100
+  healthDecayDurationMinutes: 5
+--- !u!114 &-8860220744121664901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416951122557578591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd0dbf00200347a0baa5c0860989dee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  healthDecayDurationMinutes: 2
 --- !u!1 &5690231701147353593
 GameObject:
   m_ObjectHideFlags: 0

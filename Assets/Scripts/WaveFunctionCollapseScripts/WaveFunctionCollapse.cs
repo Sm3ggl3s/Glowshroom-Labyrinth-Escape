@@ -14,6 +14,7 @@ public class WaveFunctionCollapse : MonoBehaviour {
     private float endReachThreshold = 10f; // The distance threshold for the player to reach the end cell
 
     [SerializeField] private GameObject exitPrefab;
+    [SerializeField] private GameObject startPrefab;
 
 
     [Header("Grid Settings")]
@@ -47,6 +48,8 @@ public class WaveFunctionCollapse : MonoBehaviour {
     private void Update() {
         CheckIfPlayerReachedEnd();
     }
+
+    
 
     // Initialize the grid with cells that have the tile options
     private void InitializeGrid() {
@@ -277,6 +280,10 @@ public class WaveFunctionCollapse : MonoBehaviour {
         // Spawn the player prefab at the cell's position
         player = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
 
+        Vector3 entranceSpawnLocation = spawnLocation + new Vector3(0, 3f, 0);
+        // Instantiate the exit prefab at the end cell's position
+        Instantiate(startPrefab, spawnLocation, Quaternion.identity);
+
         Debug.Log($"Player spawned at: {spawnLocation}");
 
         // Set the Cinemachine FreeLook camera's LookAt target to the player's transform
@@ -293,6 +300,9 @@ public class WaveFunctionCollapse : MonoBehaviour {
         } else {
             Debug.LogError("FreeLookCamera is not assigned in the inspector.");
         }
+
+        // Show the health bar UI'
+        GUIManager.Instance.ShowHealthBar();
     }
 
     // Set a random cell to be the end cell

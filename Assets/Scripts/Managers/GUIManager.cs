@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GUIManager : MonoBehaviour {
 
@@ -11,6 +12,11 @@ public class GUIManager : MonoBehaviour {
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private Slider progressSlider;
 
+    [Header("UI Elements")]
+    [SerializeField] private GameObject healthBarUI;
+    [SerializeField] private Slider healthBarSlider;
+    [SerializeField] private TMP_Text healthBarText;
+
     private void Awake() {
         // Ensure there's only one GUIManager in the scene
         if (Instance != null && Instance != this) {
@@ -19,6 +25,10 @@ public class GUIManager : MonoBehaviour {
         }
         Instance = this;
         DontDestroyOnLoad(gameObject); // Persist between scenes
+
+        // Initially hide the health bar
+        if (healthBarUI != null)
+            healthBarUI.SetActive(false);
     }
 
     // Show the loading screen
@@ -42,6 +52,25 @@ public class GUIManager : MonoBehaviour {
     public void HideLoadingScreen() {
         if (loadingScreen != null) {
             loadingScreen.SetActive(false);
+        }
+    }
+
+    // Show the health bar
+    public void ShowHealthBar() {
+        if (healthBarUI != null && !loadingScreen.activeSelf) {
+            healthBarUI.SetActive(true);
+        }
+    }
+
+    // Update the health bar
+    public void UpdateHealthBar(float currentHealth, float maxHealth) {
+        if (healthBarSlider != null) {
+            healthBarSlider.maxValue = maxHealth;
+            healthBarSlider.value = currentHealth;
+        }
+
+        if (healthBarText != null){
+            healthBarText.text = $"{currentHealth}";
         }
     }
 

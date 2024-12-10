@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour {
 
@@ -25,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Input Action Settings")]
     [SerializeField] private InputActionReference playerInputAction;
-
+    
     private void Awake() {
         _controller = GetComponent<CharacterController>();
 
@@ -89,6 +91,14 @@ public class PlayerController : MonoBehaviour {
         if (_direction.sqrMagnitude > 0.01f) {
             Quaternion targetRotation = Quaternion.LookRotation(new Vector3(_direction.x, 0, _direction.z));
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        }
+
+        // Start health decay when the player moves
+        if (_input.sqrMagnitude > 0) {
+            var healthSystem = GetComponent<HealthSystem>();
+            if (healthSystem != null) {
+                healthSystem.StartHealthDecay();
+            }
         }
     }
 
