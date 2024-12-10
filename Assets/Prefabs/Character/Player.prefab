@@ -104,8 +104,6 @@ MonoBehaviour:
   gravityMultiplier: 3
   cameraTransform: {fileID: 0}
   playerInputAction: {fileID: 271983830393874426, guid: 93e542fda5e8549b7b8545bda0b83390, type: 3}
-  maxHealth: 100
-  healthDecayDurationMinutes: 5
 --- !u!114 &-8860220744121664901
 MonoBehaviour:
   m_ObjectHideFlags: 0

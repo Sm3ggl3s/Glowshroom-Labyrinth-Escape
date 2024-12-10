@@ -55,10 +55,27 @@ public class GUIManager : MonoBehaviour {
         }
     }
 
+    // Show the health bar after the loading screen is hidden
+    public void ShowHealthBarAfterLoading() {
+        StartCoroutine(ShowHealthBarCoroutine());
+    }
+
+    private IEnumerator ShowHealthBarCoroutine() {
+        // Wait until the loading screen is fully hidden
+        while (loadingScreen.activeSelf) {
+            yield return null; // Wait one frame
+        }
+
+        // Show the health bar
+        ShowHealthBar();
+    }
+
     // Show the health bar
     public void ShowHealthBar() {
-        if (healthBarUI != null && !loadingScreen.activeSelf) {
+        if (healthBarUI != null) {
             healthBarUI.SetActive(true);
+        } else {
+            Debug.LogError("Health bar reference is missing in GUIManager.");
         }
     }
 

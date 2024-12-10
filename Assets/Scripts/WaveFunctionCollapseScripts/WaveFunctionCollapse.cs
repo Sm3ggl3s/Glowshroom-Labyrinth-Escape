@@ -302,7 +302,7 @@ public class WaveFunctionCollapse : MonoBehaviour {
         }
 
         // Show the health bar UI'
-        GUIManager.Instance.ShowHealthBar();
+        GUIManager.Instance.ShowHealthBarAfterLoading();
     }
 
     // Set a random cell to be the end cell
