@@ -30,6 +30,12 @@ public class HealthSystem : MonoBehaviour {
 
     private IEnumerator DecreaseHealthOverTime() {
         while (currentHealth > 0) {
+            // Check if the game is paused
+            if (GUIManager.Instance != null && GUIManager.Instance.IsGamePaused) {
+                yield return null; // Wait for the next frame without decreasing health
+                continue; // Skip the rest of this iteration
+            }
+
             currentHealth -= healthDecayRate * Time.deltaTime;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 

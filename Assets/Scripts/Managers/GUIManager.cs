@@ -11,11 +11,17 @@ public class GUIManager : MonoBehaviour {
     [Header("UI Screens")]
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private Slider progressSlider;
+    [SerializeField] private GameObject pauseMenu;
 
     [Header("UI Elements")]
     [SerializeField] private GameObject healthBarUI;
     [SerializeField] private Slider healthBarSlider;
     [SerializeField] private TMP_Text healthBarText;
+
+    private bool isGamePaused = false;
+
+    // Public property to access the pause state
+    public bool IsGamePaused => isGamePaused;   
 
     private void Awake() {
         // Ensure there's only one GUIManager in the scene
@@ -26,14 +32,61 @@ public class GUIManager : MonoBehaviour {
         Instance = this;
         DontDestroyOnLoad(gameObject); // Persist between scenes
 
-        // Initially hide the health bar
+        // Initially hide the health bar and Pause Screen
         if (healthBarUI != null)
             healthBarUI.SetActive(false);
+        if (pauseMenu != null)
+            pauseMenu.SetActive(false);
+    }
+
+    private void Update() {
+        // Toggle pause state when the "P" key is pressed
+        if (Input.GetKeyDown(KeyCode.P)) {
+            TogglePause();
+        }
+    }
+
+    // Toggles the pause state and UI
+    public void TogglePause() {
+        isGamePaused = !isGamePaused;
+
+        if (isGamePaused) {
+            // Pause the game
+            Time.timeScale = 0;
+            if (pauseMenu != null) pauseMenu.SetActive(true);
+            ShowCursor();
+        } else {
+            // Resume the game
+            Time.timeScale = 1;
+            if (pauseMenu != null) pauseMenu.SetActive(false);
+            HideCursor();
+        }
+    }
+
+    // Called by the Resume button in the pause menu
+    public void ResumeGame() {
+        isGamePaused = false;
+        Time.timeScale = 1;
+        if (pauseMenu != null) pauseMenu.SetActive(false);
+        HideCursor();
+    }
+
+    // Show and unlock the cursor when paused
+    private void ShowCursor() {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None; // Unlock the cursor
+    }
+
+    // Hide and lock the cursor when resumed
+    private void HideCursor() {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor
     }
 
     // Show the loading screen
     public void ShowLoadingScreen() {
         if (loadingScreen != null) {
+            HideCursor(); // Hide the cursor when loading
             loadingScreen.SetActive(true);
             if (progressSlider != null) {
                 progressSlider.value = 0; // Reset the progress slider

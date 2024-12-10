@@ -59,6 +59,13 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
+        // Check if the game is paused
+        if (GUIManager.Instance != null && GUIManager.Instance.IsGamePaused) {
+            // Stop movement input when the game is paused
+            _input = Vector2.zero;  // Reset input to prevent continuous movement
+            return;
+        }
+
         PlayerGravity(); // Gravity is applied here
 
         if (_input.sqrMagnitude == 0) {
