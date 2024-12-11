@@ -81,7 +81,7 @@ Contributions are welcome! If you have ideas, bug reports, or suggestions, feel 
 
 ## License
 
-MIT License
+[MIT License](https://choosealicense.com/licenses/mit/)
 
 ***
 
